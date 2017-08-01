@@ -1,8 +1,8 @@
 
 $(document).ready(function () {
+    
     timeoutHandlePopup = setTimeout(function () { showTimeoutPopup(); }, 840000);
     timeoutHandleActiveSession = setTimeout(function () { getActiveSession(); }, 900000);
-
 
     function setCustomTimeout() {
         clearTimeout(timeoutHandlePopup);
