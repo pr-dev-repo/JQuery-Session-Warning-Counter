@@ -1,44 +1,46 @@
-/*Session warning*/
+
 $(document).ready(function () {
+    timeoutHandlePopup = setTimeout(function () { showTimeoutPopup(); }, 840000);
+    timeoutHandleActiveSession = setTimeout(function () { getActiveSession(); }, 900000);
 
-    var warningTime = 0;
-    //Intervalo para incrementacion
-    var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
 
-    //metodo de verificar sesion
-    function timerIncrement() {
-        warningTime++;
+    function setCustomTimeout() {
+        clearTimeout(timeoutHandlePopup);
+        clearTimeout(timeoutHandleActiveSession);
 
-        if (warningTime > 14) { getActiveSession(); }
+        timeoutHandlePopup = setTimeout(function () { showTimeoutPopup(); }, 840000);
+        timeoutHandleActiveSession = setTimeout(function () { getActiveSession(); }, 900000);
 
-        if (warningTime > 13) { // 13 = 14 minutes
+    }
 
-            setTimeout(function () {
-                $('#timeout-warning').modal('show');
-            });
-            //set warning time to  0 when hidden to prevent modal again
-            $('#timeout-warning').on('hidden.bs.modal', function () {
-                warningTime = 0;
-            })
+    function showTimeoutPopup() {
+        setTimeout(function () {
+            $('#timeout-warning').modal('show');
 
-            $('#isActiveSession').click(function () {
-                getActiveSession();
-            });
-        }
+        });
+
+
+        $('#isActiveSession').click(function () {
+            getActiveSession();
+
+        });
     }
 
     function getActiveSession() {
-        var url = '/Home/isActiveSession/';
+        var url = '/Home/IsActiveSession/';
         $.get(url)
-               .error(function () {//on expired session
-                   location.reload();
-               })
-               .success(function () {
-                   warningTime = 0;
-                   return true //session isActive
-               })
+            .error(function () {//on expired session
+                location.reload(true);
+
+            })
+            .success(function () {
+                setCustomTimeout();
+                return true
+
+            })
+
         $('#timeout-warning').modal('hide');
-        warningTime = 0;
+
         return false;
     }
 
