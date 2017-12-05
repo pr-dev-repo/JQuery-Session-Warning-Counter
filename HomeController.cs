@@ -1,4 +1,4 @@
-       /* Try and catch are optional, i am logging errors :) */
+
         [HttpGet]
         [Authorize]
         public IActionResult isActiveSession()
