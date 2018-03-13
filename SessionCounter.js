@@ -29,21 +29,19 @@ $(document).ready(function () {
     }
 
     function getActiveSession() {
-        var url = '/Home/IsActiveSession/';
-        $.get(url)
-            .error(function () {//on expired session
-                location.reload(true);
 
-            })
-            .success(function () {
+        $.ajax({
+            type: "GET",
+            url: urlGetActiveSession,
+            data: {},
+            async: false,
+            error: function () { location.reload(true); }, // on expired
+            success: function () {
                 setCustomTimeout();
-                return true
-
-            })
+            }
+        });
 
         $('#timeout-warning').modal('hide');
-
-        return false;
     }
 
 });
